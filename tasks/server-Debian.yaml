@@ -5,6 +5,7 @@
     - name: Ensure rpcbind is running
       service: name=rpcbind state=started enabled=yes
 
-    - name: start NFS server service in Deb systems 
-      service: name=nfs-kernel-server state=started enabled=yes
+    - set_fact: NFS_SERVICE="nfs-kernel-server"
+
+
 
