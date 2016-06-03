@@ -6,6 +6,9 @@
 
     - include: "server-{{ansible_os_family}}.yaml"
 
+    - name: Ensure rpcbind is running
+      service: name=rpcbind state=started enabled=yes
+
     - name: Restart NFS server service
       service: name={{NFS_SERVICE}} state=restarted
       when: nfs_exports_result|changed
