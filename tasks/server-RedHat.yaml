@@ -1,0 +1,7 @@
+---
+    - name: update repositories cache and install NFS in RedHat systems
+      yum: name=nfs-utils
+      
+    - name: Ensure rpcbind is running
+      service: name=rpcbind state=started enabled=yes
+

@@ -1,0 +1,9 @@
+---
+    - include: "server-{{ansible_os_family}}.yaml"
+
+    - name: export the directories editing the file /etc/exports
+      lineinfile: dest=/etc/exports regexp="^{{ item.path }} " line="{{ item.path }} {{ item.export }}"
+      with_items: "{{ nfs_exports }}"
+
+    - name: export exports file
+      command: exportfs -ra
