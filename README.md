@@ -15,7 +15,7 @@ nfs_mode: server
 # Line to add to the /etc/exports file
 nfs_exports:
   - path: "/home"
-    export: "vnode*(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"
+    export: "vnode*.localdomain(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"
 
 # Line to add to the /etc/fstab file
 nfs_client_imports:
@@ -38,7 +38,7 @@ This an example of how to install a Torque/PBS cluster:
 ```yaml
     - hosts: server
       roles:
-      - { role: 'indigo-dc.nfs', nfs_mode: 'server', nfs_exports: [{path: "/home", export: "vnode*(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"}] }
+      - { role: 'indigo-dc.nfs', nfs_mode: 'server', nfs_exports: [{path: "/home", export: "vnode*.localdomain(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"}] }
 
     - hosts: client
       roles:
