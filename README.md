@@ -24,6 +24,13 @@ nfs_client_imports:
     server_host: "{{hostvars['server']['ansible_default_ipv4']}}"
 ```
 
+NFS client imports can also define the following variables:
+  * `state`: see: http://docs.ansible.com/ansible/mount_module.html for more information.
+  * `opts`: see https://wiki.debian.org/fr/fstab for more information.
+  * `dump`: see https://wiki.debian.org/fr/fstab for more information.
+  * `passno`: see https://wiki.debian.org/fr/fstab for more information.
+
+
 Example Playbook
 ----------------
 
