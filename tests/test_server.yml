@@ -1,0 +1,4 @@
+---
+- hosts: all
+  roles:
+    - {role: role_under_test, nfs_mode: 'server', nfs_exports: [{path: "/home", export: "localhost(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"}] }
