@@ -10,6 +10,10 @@
     - name: Ensure rpcbind is running
       service: name=rpcbind state=started enabled=yes
 
+    - name: Wait NFS server to be up
+      wait_for: timeout=300 port=2049 host="{{ item.server_host }}"
+      with_items: "{{ nfs_client_imports }}"
+
     - name: mount the shared directories
       mount:
         name: "{{ item.local }}"
