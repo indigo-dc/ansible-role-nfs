@@ -24,3 +24,4 @@
         dump: "{{ item.dump | default(omit) }}"
         passno: "{{ item.passno | default(omit) }}"
       with_items: "{{ nfs_client_imports }}"
+      notify: "nfs shared directories mounted"
