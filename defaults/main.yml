@@ -12,3 +12,6 @@ nfs_client_imports:
   - local: "/home"
     remote: "/home"
     server_host: "{{hostvars['server']['ansible_default_ipv4']}}"
+
+# List of IPs/Nets to allow access in rpcbind
+rpcbind_ips: ""
