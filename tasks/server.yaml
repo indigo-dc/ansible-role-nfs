@@ -9,6 +9,22 @@
     - name: Ensure rpcbind is running
       service: name=rpcbind state=started enabled=yes
 
+    - block:
+        - name: Deny rpcbind to ALL
+          lineinfile:
+            dest: /etc/hosts.deny
+            regexp: "^rpcbind: "
+            line: "rpcbind: ALL"
+            create: yes
+
+        - name: Allow rpcbind to {{ rpcbind_ips }}
+          lineinfile:
+            dest: /etc/hosts.allow
+            regexp: "^rpcbind: "
+            line: "rpcbind: {{ rpcbind_ips }}"
+            create: yes
+      when: rpcbind_ips != ""
+
     - name: Restart NFS server service
       service: name={{NFS_SERVICE}} state=restarted enabled=yes
       when: nfs_exports_result is changed
