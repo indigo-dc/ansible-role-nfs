@@ -14,4 +14,4 @@ nfs_client_imports:
     server_host: "{{hostvars['server']['ansible_default_ipv4']}}"
 
 # Only enable NFSv4
-nfs_only_v4: true
+nfs_only_v4: false
