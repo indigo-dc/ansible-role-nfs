@@ -8,11 +8,11 @@
 
     - name: Ensure rpcbind is running
       service: name=rpcbind state=started enabled=yes
-      when: nfs_only_v4 | bool == false
+      when: not nfs_only_v4
 
     - name: Ensure rpcbind is stopped
       service: name=rpcbind state=stopped enabled=no
-      when: nfs_only_v4 | bool
+      when: nfs_only_v4
 
     - name: Restart NFS server service
       service: name={{NFS_SERVICE}} state=restarted enabled=yes
