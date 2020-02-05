@@ -13,13 +13,18 @@
     - name: Wait NFS server to be up
       wait_for: timeout=300 port=2049 host="{{ item.server_host }}"
       with_items: "{{ nfs_client_imports }}"
+      
+    - set_fact: FSTYPE="nfs"
+    
+    - set_fact: FSTYPE="nfs4"
+      when: nfs_only_v4 | bool
 
     - name: mount the shared directories
       mount:
         name: "{{ item.local }}"
         src: "{{ item.server_host }}:{{ item.remote }}"
         state: "{{ item.state | default('mounted') }}"
-        fstype: nfs
+        fstype: "{{ FSTYPE }}"
         opts: "{{ item.opts | default(omit) }}"
         dump: "{{ item.dump | default(omit) }}"
         passno: "{{ item.passno | default(omit) }}"
