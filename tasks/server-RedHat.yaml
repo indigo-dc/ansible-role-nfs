@@ -5,7 +5,7 @@
     - set_fact: NFS_SERVICE="nfs"
 
     - set_fact: NFS_SERVICE="nfs-server"
-      when: ansible_distribution_major_version == "7"
+      when: ansible_distribution_major_version >= "7"
 
     - block:
       - name: Set RPCNFSDARGS
