@@ -4,5 +4,29 @@
 
     - set_fact: NFS_SERVICE="nfs-kernel-server"
 
+    - block:
+      - name: Set NEED_STATD
+        lineinfile:
+          path: /etc/default/nfs-common
+          regexp: '^NEED_STATD='
+          line: NEED_STATD="no"
 
+      - name: Set NEED_IDMAPD
+        lineinfile:
+          path: /etc/default/nfs-common
+          regexp: '^NEED_IDMAPD='
+          line: NEED_IDMAPD="yes"
 
+      - name: Set RPCNFSDOPTS
+        lineinfile:
+          path: /etc/default/nfs-kernel-server
+          regexp: '^RPCNFSDOPTS='
+          line: RPCNFSDOPTS="-N 2 -N 3"
+
+      - name: Set RPCMOUNTDOPTS
+        lineinfile:
+          path: /etc/default/nfs-kernel-server
+          regexp: '^RPCMOUNTDOPTS='
+          line: RPCMOUNTDOPTS="--manage-gids -N 2 -N 3"
+
+      when: nfs_only_v4 | bool

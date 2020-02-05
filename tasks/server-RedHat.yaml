@@ -6,3 +6,17 @@
 
     - set_fact: NFS_SERVICE="nfs-server"
       when: ansible_distribution_major_version == "7"
+
+    - block:
+      - name: Set RPCNFSDARGS
+        lineinfile:
+          path: /etc/sysconfig/nfs
+          regexp: '^RPCNFSDARGS='
+          line: RPCNFSDARGS="-N 2 -N 3"
+        register: nfs_config
+
+      - name: Restart nfs-config
+        service: name=nfs-config state=restarted
+        when: nfs_exports_result is changed
+
+      when: nfs_only_v4 | bool

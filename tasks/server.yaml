@@ -8,22 +8,11 @@
 
     - name: Ensure rpcbind is running
       service: name=rpcbind state=started enabled=yes
+      when: nfs_only_v4 | bool == false
 
-    - block:
-        - name: Deny rpcbind to ALL
-          lineinfile:
-            dest: /etc/hosts.deny
-            regexp: "^rpcbind: "
-            line: "rpcbind: ALL"
-            create: yes
-
-        - name: Allow rpcbind to {{ rpcbind_ips }}
-          lineinfile:
-            dest: /etc/hosts.allow
-            regexp: "^rpcbind: "
-            line: "rpcbind: {{ rpcbind_ips }}"
-            create: yes
-      when: rpcbind_ips != ""
+    - name: Ensure rpcbind is stopped
+      service: name=rpcbind state=stopped enabled=no
+      when: nfs_only_v4 | bool
 
     - name: Restart NFS server service
       service: name={{NFS_SERVICE}} state=restarted enabled=yes
