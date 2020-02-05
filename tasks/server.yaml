@@ -10,13 +10,17 @@
       service: name=rpcbind state=started enabled=yes
       when: not nfs_only_v4
 
-    - name: Ensure rpcbind is stopped
-      service: name=rpcbind state=stopped enabled=no
-      when: nfs_only_v4
-
     - name: Restart NFS server service
       service: name={{NFS_SERVICE}} state=restarted enabled=yes
       when: nfs_exports_result is changed
 
     - name: Check if NFS server service is started
       service: name={{NFS_SERVICE}} state=started
+
+    - name: Ensure rpcbind is stopped
+      service: name=rpcbind state=stopped enabled=no
+      when: nfs_only_v4
+
+    - name: Ensure rpcbind.socket is stopped
+      service: name=rpcbind.socket state=stopped enabled=no
+      when: ansible_os_family == "RedHat" and nfs_only_v4
