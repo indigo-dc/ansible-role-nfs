@@ -8,22 +8,7 @@
 
     - name: Ensure rpcbind is running
       service: name=rpcbind state=started enabled=yes
-
-    - block:
-        - name: Deny rpcbind to ALL
-          lineinfile:
-            dest: /etc/hosts.deny
-            regexp: "^rpcbind: "
-            line: "rpcbind: ALL"
-            create: yes
-
-        - name: Allow rpcbind to {{ rpcbind_ips }}
-          lineinfile:
-            dest: /etc/hosts.allow
-            regexp: "^rpcbind: "
-            line: "rpcbind: {{ rpcbind_ips }}"
-            create: yes
-      when: rpcbind_ips != ""
+      when: not nfs_only_v4
 
     - name: Restart NFS server service
       service: name={{NFS_SERVICE}} state=restarted enabled=yes
@@ -31,3 +16,11 @@
 
     - name: Check if NFS server service is started
       service: name={{NFS_SERVICE}} state=started
+
+    - name: Ensure rpcbind is stopped
+      service: name=rpcbind state=stopped enabled=no
+      when: nfs_only_v4
+
+    - name: Ensure rpcbind.socket is stopped
+      service: name=rpcbind.socket state=stopped enabled=no
+      when: ansible_os_family == "RedHat" and nfs_only_v4
