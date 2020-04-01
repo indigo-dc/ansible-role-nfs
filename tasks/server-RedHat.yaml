@@ -10,7 +10,7 @@
     - block:
       - name: Set RPCNFSDARGS
         lineinfile:
-          path: /etc/sysconfig/nfs
+          dest: /etc/sysconfig/nfs
           regexp: '^RPCNFSDARGS='
           line: RPCNFSDARGS="-N 2 -N 3"
         register: nfs_config
